@@ -2,7 +2,7 @@ package todo.DTOs;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import todo.validation.NotEmptyList;
+import todo.validations.NotEmptyList;
 
 import java.time.LocalDate;
 import java.util.List;
