@@ -40,6 +40,7 @@ public class UserEntity {
 
     @NotEmpty(message = "{campo.senha.obrigatorio}")
     private String password;
+
     private String level;
 
     @Column(name = "created_at")
@@ -49,7 +50,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private Set<TodoEntity> todo;
 
-    public UserEntity(String nome) {
+    public UserEntity(String nome, String number, String mail, String id, String user, LocalDate now) {
         this.setNome(nome);
     }
 
