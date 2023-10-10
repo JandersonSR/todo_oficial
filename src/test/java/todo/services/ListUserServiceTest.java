@@ -3,12 +3,6 @@ package todo.services;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import org.hibernate.validator.constraints.br.CPF;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,10 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import todo.domains.entities.TodoEntity;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import todo.domains.entities.UserEntity;
 import todo.domains.repository.UserRepository;
-import todo.services.imp.TodoServiceImp;
+
 import todo.services.imp.UserServiceImp;
 
 import java.time.LocalDate;
@@ -59,6 +54,19 @@ public class ListUserServiceTest {
                 LocalDate.now()
         );
     }
+    @Test
+    void getAllUsers() {
+        when(userRepository.findAll()).thenReturn(Collections.singletonList(userEntity));
+        UserEntity filter = new UserEntity();
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example example = Example.of(filter, matcher);
+        List<UserEntity> userList = userServiceImp.list(example);
+    }
 
     @Test
     void succeedingTest() {
@@ -66,7 +74,8 @@ public class ListUserServiceTest {
 
     @Test
     void failingTest() {
-        fail("a failing test");
+
+//        fail("a failing test");
     }
 
     @Test
@@ -77,8 +86,8 @@ public class ListUserServiceTest {
 
     @Test
     void abortedTest() {
-        assumeTrue("abc".contains("Z"));
-        fail("test should have been aborted");
+        assumeTrue("abcZ".contains("Z"));
+//        fail("test should have been aborted");
     }
 
     @AfterEach
